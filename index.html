@@ -1,0 +1,467 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <script src="config.js"></script>
+   <script src="script.js"></script>
+   <script src="theme-toggle.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Becas Estudiantiles</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme-styles.css">
+</head>
+<body class="landing-page">
+
+    <header class="landing-header">
+        <div class="landing-container">
+            <div class="logo-container">
+                <a href="#inicio">
+                    <img src="img/descargar.png" alt="Logo Sistema de Becas" class="logo-img">
+                </a>
+                <h1 class="landing-logo">Sistema de Becas</h1>
+            </div>
+
+            <nav class="landing-nav">
+                <a href="#inicio">Inicio</a>
+                <a href="#caracteristicas">Características</a>
+                <a href="#contacto">Contacto</a>
+            </nav>
+
+            <div class="header-actions">
+                <button class="btn btn-secondary" onclick="showRegisterModal()">Registrarse</button>
+                <button class="btn btn-primary" onclick="showLoginModal()">Iniciar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section" id="inicio">
+        <div class="landing-container hero-grid">
+
+            <div class="hero-content">
+                <h1 class="hero-title">Sistema de Gestión de Becas Estudiantiles</h1>
+                <p class="hero-description">Plataforma integral para la administración, solicitud y seguimiento de becas universitarias. Conectando estudiantes con oportunidades educativas.</p>
+
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-lg" onclick="showLoginModal()">Acceder al Sistema</button>
+                    <button class="btn btn-secondary btn-lg" onclick="scrollToSection('caracteristicas')">Conocer Más</button>
+                </div>
+            </div>
+
+            <div class="hero-gallery">
+                <img src="img/Convocatoria-a-guatemaltecos-a-postularse-a-becas-Guatefuturo-20211-885x500.jpg" class="gallery-img active">
+                <img src="img/ucr_image_peer-mentor_600x300.avif" class="gallery-img">
+                <img src="img/como-conseguir-una-beca-2-1.webp" class="gallery-img">
+                <img src="img/OIP.webp" class="gallery-img">
+            </div>
+
+        </div>
+    </section>
+
+    <section class="features-section" id="caracteristicas">
+        <div class="landing-container">
+
+            <h2 class="section-title">Características del Sistema</h2>
+            <p class="section-description">Herramientas completas para gestionar el ciclo de vida de las becas</p>
+
+            <div class="features-grid">
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="img/Asistentes-Virtuales-peru.jpg" alt="Asistente Virtual" class="feature-img">
+                    </div>
+                    <h4>Asistente Virtual</h4>
+                    <p>Chatbot con IA para responder consultas frecuentes</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="img/R.jpg" alt="Gestión Académica" class="feature-img">
+                    </div>
+                    <h4>Gestión Completa</h4>
+                    <p>11 etapas del proceso de becas</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="img/OIP (1).webp" alt="Acceso Móvil" class="feature-img">
+                    </div>
+                    <h4>Acceso Móvil</h4>
+                    <p>Disponible en cualquier dispositivo</p>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <img src="img/¿Cuales-son-los-3-pilares-de-la-seguridad-informatica-scaled.webp" alt="Seguridad" class="feature-img">
+                    </div>
+                    <h4>Seguridad</h4>
+                    <p>Protección de datos personales</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="process-section">
+        <div class="landing-container">
+
+            <h2 class="section-title">Proceso de Becas</h2>
+            <p class="section-description">11 etapas para una gestión completa y transparente</p>
+
+            <div class="process-timeline">
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/OIP (2).webp" alt="Convocatoria y Difusión">
+                    </div>
+                    <h4>Convocatoria y Difusión</h4>
+                    <p>Publicación de lineamientos y fechas</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/formulario-de-solicitud-de-beca-para-estudiantes-universitarios-plantilla-de-excel_0a6aff5128__max.avif" alt="Solicitud de Beca">
+                    </div>
+                    <h4>Solicitud de Beca</h4>
+                    <p>Recepción y verificación de documentos</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/1718071588.webp" alt="Análisis Socioeconómico">
+                    </div>
+                    <h4>Análisis Socioeconómico</h4>
+                    <p>Evaluación de la situación del estudiante</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/metodos-de-evaluacion-en-educacion-superior.webp" alt="Evaluación Académica">
+                    </div>
+                    <h4>Evaluación Académica</h4>
+                    <p>Validación del desempeño académico</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/OIP (3).webp" alt="Revisión Administrativa">
+                    </div>
+                    <h4>Revisión Administrativa</h4>
+                    <p>Verificación de requisitos institucionales</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/153-Comite-de-Becas-2017-1.jpg" alt="Comité de Becas">
+                    </div>
+                    <h4>Comité de Becas</h4>
+                    <p>Evaluación colegiada y resolución</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/OIP (4).webp" alt="Comunicación de Resultados">
+                    </div>
+                    <h4>Comunicación de Resultados</h4>
+                    <p>Notificación oficial a estudiantes</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/OIP (5).webp" alt="Formalización">
+                    </div>
+                    <h4>Formalización</h4>
+                    <p>Firma de contratos y acuerdos</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/OIP (6).webp" alt="Seguimiento y Control">
+                    </div>
+                    <h4>Seguimiento y Control</h4>
+                    <p>Monitoreo del cumplimiento</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/R (1).jpg" alt="Renovación">
+                    </div>
+                    <h4>Renovación</h4>
+                    <p>Proceso de continuidad de becas</p>
+                </div>
+
+                <div class="process-step">
+                    <div class="process-icon">
+                        <img src="img/carpetas-archivos-cerradas-varias-pestanas-cierre-interior-mantener-documentos-papel-tamano-carta_554353-450.avif" alt="Cierre y Archivo">
+                    </div>
+                    <h4>Cierre y Archivo</h4>
+                    <p>Finalización y documentación</p>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="contact-section" id="contacto">
+        <div class="landing-container">
+
+            <h2 class="section-title">¿Necesitas Ayuda?</h2>
+            <p class="section-description">Nuestro equipo está disponible para asistirte</p>
+
+            <div class="contact-card-container">
+
+                <div class="contact-card-3d">
+
+                    <div class="contact-front">
+                        <h3>Contáctanos</h3>
+                        <p>Haz clic para ver nuestros datos de contacto</p>
+                        <div class="contact-icon">💬</div>
+                    </div>
+
+                    <div class="contact-back">
+                        <h3>📞 Información de Contacto</h3>
+
+                        <ul class="contact-info">
+                            <li>
+                                <strong>Correo Electrónico:</strong><br>
+                                proyectobecas@cuc.cr
+                            </li>
+                            <li>
+                                <strong>Teléfono:</strong><br>
+                                (555) 123-4567
+                            </li>
+                            <li>
+                                <strong>Horario de Atención:</strong><br>
+                                Lunes a Viernes: 8:00 AM - 5:00 PM
+                            </li>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <footer class="landing-footer">
+        <div class="landing-container">
+
+            <div class="footer-content">
+
+                <div class="footer-section">
+                    <h4>Sistema de Becas</h4>
+                    <p>Plataforma integral para la gestión de becas estudiantiles</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Enlaces Rápidos</h4>
+                    <a href="#inicio">Inicio</a>
+                    <a href="#caracteristicas">Características</a>
+                    <a href="#contacto">Contacto</a>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <a href="#">Términos y Condiciones</a>
+                    <a href="#">Política de Privacidad</a>
+                    <a href="#">Protección de Datos</a>
+                </div>
+
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 Sistema de Becas Estudiantiles. Todos los derechos reservados.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- =============================
+         LOGIN MODAL (CORREGIDO)
+    ============================== -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+
+            <h2>Iniciar Sesión</h2>
+            <p class="text-muted">Accede al sistema con tus credenciales</p>
+
+            <form class="login-form" onsubmit="handleLogin(event)">
+
+                <div class="form-group">
+                    <label>Tipo de Usuario</label>
+                    <select class="input" id="userType" required>
+                        <option value="">Selecciona tu rol</option>
+                        <option value="aspirante">Aspirante a Beca</option>
+                        <option value="estudiante">Estudiante Becado</option>
+                        <option value="admin">Trabajadora Social / Administrador</option>
+                        <option value="comite">Comité de Becas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico o Matrícula</label>
+                    <input type="text" class="input" id="username" placeholder="usuario@universidad.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" class="input" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="remember">
+                        <span>Recordar mi sesión</span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+
+                <div class="form-links">
+                    <a href="#" onclick="showRecoveryModal()">¿Olvidaste tu contraseña?</a>
+                    <a href="#" onclick="showRegisterModal()">Crear cuenta nueva</a>
+                </div>
+
+            </form>
+
+            <div class="divider">
+                <span>O continuar con</span>
+            </div>
+
+            <div class="social-login">
+                <button class="btn-social">Google</button>
+                <button class="btn-social">Facebook</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- =============================
+         REGISTER MODAL (CORREGIDO)
+    ============================== -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+
+            <button class="modal-close" onclick="closeRegisterModal()">&times;</button>
+
+            <h2>Crear Cuenta</h2>
+            <p class="text-muted">Regístrate para solicitar becas</p>
+
+            <form class="login-form" onsubmit="handleRegister(event)">
+
+                <div class="form-group">
+                    <label>Tipo de Usuario</label>
+                    <select class="input" id="registerUserType" required>
+                        <option value="">Selecciona tu rol</option>
+                        <option value="aspirante">Aspirante a Beca</option>
+                        <option value="estudiante">Estudiante Actual</option>
+                        <option value="trabajadora_social">Trabajadora Social / Administrador</option>
+                        <option value="comite">Comité de Becas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre Completo</label>
+                    <input type="text" class="input" id="registerFullName" placeholder="Juan Pérez García" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" class="input" id="registerEmail" placeholder="juan.perez@universidad.edu" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Matrícula (solo estudiantes actuales)</label>
+                    <input type="text" class="input" id="registerMatricula" placeholder="2021-0001">
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" class="input" id="registerPassword" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar Contraseña</label>
+                    <input type="password" class="input" id="registerPasswordConfirm" placeholder="••••••••" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="registerTerms" required>
+                        <span>Acepto los <a href="#" style="color: var(--accent-primary);">términos y condiciones</a></span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">Crear Cuenta</button>
+
+                <div class="form-links" style="justify-content: center; margin-top: 20px;">
+                    <span style="color: var(--text-secondary);">¿Ya tienes cuenta? 
+                        <a href="#"
+                        onclick="closeRegisterModal(); showLoginModal();">Inicia sesión</a>
+                    </span>
+                </div>
+
+            </form>
+
+            <div class="divider">
+                <span>O regístrate con</span>
+            </div>
+
+            <div class="social-login">
+                <button class="btn-social">Google</button>
+                <button class="btn-social">Facebook</button>
+            </div>
+
+        </div>
+    </div>
+
+    <button class="chatbot-button" id="chatbotButton" onclick="toggleChatbot()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
+    <div class="chatbot-widget" id="chatbotWidget">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <h3>Asistente Virtual</h3>
+                <p>Estoy aquí para ayudarte</p>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Hola! Soy tu asistente virtual del Sistema de Becas. ¿En qué puedo ayudarte hoy?</p>
+                    <div class="quick-replies">
+                        <button onclick="sendQuickReply('¿Cómo solicito una beca?')">¿Cómo solicito una beca?</button>
+                        <button onclick="sendQuickReply('¿Qué documentos necesito?')">¿Qué documentos necesito?</button>
+                        <button onclick="sendQuickReply('¿Cuánto tarda el proceso?')">¿Cuánto tarda el proceso?</button>
+                        <button onclick="sendQuickReply('¿Cómo renuevo mi beca?')">¿Cómo renuevo mi beca?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Escribe tu pregunta..." onkeypress="handleChatKeyPress(event)">
+            <button onclick="sendMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="landing-script.js"></script>
+
+</body>
+</html>

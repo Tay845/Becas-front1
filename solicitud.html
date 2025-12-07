@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitud de Beca Socioeconómica</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="theme-styles.css">
+</head>
+<body>
+  <div class="layout">
+    <header class="header">
+      <div class="header-left">
+        
+        <div class="logo"> Becas</div>
+      </div>
+      <div class="header-right">
+        <button class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <div class="view-header">
+        <div>
+          <h2>Solicitud de Beca Socioeconómica</h2>
+          <p class="text-muted">Complete el formulario completo para enviar su solicitud</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <form id="formBeca" class="scholarship-form">
+
+            <!-- Datos Personales -->
+            <section class="form-step active" data-step="1">
+              <h3>Datos Personales</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Primer Apellido:</label>
+                  <input type="text" name="primer_apellido" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Segundo Apellido:</label>
+                  <input type="text" name="segundo_apellido" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Nombre:</label>
+                  <input type="text" name="nombre" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Cédula / DIMEX:</label>
+                  <input type="text" name="cedula" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Fecha de nacimiento:</label>
+                  <input type="date" name="fecha_nacimiento" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Estado civil:</label>
+                  <input type="text" name="estado_civil" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Género:</label>
+                  <select name="genero" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Femenino</option>
+                    <option>Masculino</option>
+                    <option>No binario</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Correo electrónico:</label>
+                  <input type="email" name="correo" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Teléfono:</label>
+                  <input type="text" name="telefono" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Provincia:</label>
+                  <input type="text" name="provincia" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Cantón:</label>
+                  <input type="text" name="canton" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Distrito:</label>
+                  <input type="text" name="distrito" class="input" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Dirección exacta:</label>
+                <textarea name="direccion" class="textarea" required></textarea>
+              </div>
+            </section>
+
+            <!-- Información Académica -->
+            <section class="form-step active" data-step="2">
+              <h3>Información Académica</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Nombre del colegio donde concluyó sus estudios:</label>
+                  <input type="text" name="colegio" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Tipo de institución:</label>
+                  <select name="tipo_institucion" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Pública</option>
+                    <option>Privada</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>¿Disfrutó de beca en el colegio?</label>
+                  <select name="beca_colegio" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Sí</option>
+                    <option>No</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Institución que la brindaba:</label>
+                  <input type="text" name="institucion_beca" class="input">
+                </div>
+
+                <div class="form-group">
+                  <label>Monto de beca:</label>
+                  <input type="number" name="monto_beca" class="input" placeholder="₡">
+                </div>
+
+                <div class="form-group"> 
+                  <label>¿Posee títulos universitarios o parauniversitarios?</label>
+                  <select name="posee_titulo" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Sí</option>
+                    <option>No</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Mayor grado aprobado:</label>
+                  <input type="text" name="grado_aprobado" class="input">
+                </div>
+              </div>
+            </section>
+
+            <!-- Vivienda -->
+            <section class="form-step active" data-step="3">
+              <h3>Información de Vivienda</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Área de construcción (m²):</label>
+                  <input type="number" name="area" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Tipo de vivienda:</label>
+                  <select name="tipo_vivienda" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Propia sin hipoteca</option>
+                    <option>Propia con hipoteca</option>
+                    <option>Alquilada</option>
+                    <option>Prestada</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Condición de vivienda:</label>
+                  <select name="condicion_vivienda" class="select" required>
+                    <option value="">Seleccione</option>
+                    <option>Buena</option>
+                    <option>Regular</option>
+                    <option>Mala</option>
+                    <option>Muy mala</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Tipo de adquisición:</label>
+                  <input type="text" name="medio_adquisicion" class="input">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Servicios básicos:</label>
+                <textarea name="servicios_basicos" class="textarea" placeholder="Ej: Agua, Luz, Internet" required></textarea>
+              </div>
+            </section>
+
+            <!-- Información de Padres/Encargados -->
+            <section class="form-step active" data-step="4">
+              <h3>Información de Padres/Encargados</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Ocupación del padre:</label>
+                  <input type="text" name="ocupacion_padre" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Ocupación de la madre:</label>
+                  <input type="text" name="ocupacion_madre" class="input" required>
+                </div>
+              </div>
+            </section>
+
+            <!-- Ingresos y Egresos -->
+            <section class="form-step active" data-step="5">
+              <h3>Ingresos y Egresos del Grupo Familiar</h3>
+
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Total ingresos familiares (₡):</label>
+                  <input type="number" name="ingreso_total" class="input" required>
+                </div>
+
+                <div class="form-group">
+                  <label>Total egresos familiares (₡):</label>
+                  <input type="number" name="egreso_total" class="input" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Descripción principal de ingresos:</label>
+                <textarea name="desc_ingresos" class="textarea" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Descripción principal de gastos:</label>
+                <textarea name="desc_gastos" class="textarea" required></textarea>
+              </div>
+            </section>
+
+            <!-- Observaciones -->
+            <section class="form-step active" data-step="6">
+              <h3>Observaciones</h3>
+
+              <div class="form-group">
+                <label>Observaciones adicionales:</label>
+                <textarea name="observaciones" class="textarea" placeholder="Agrega cualquier información relevante"></textarea>
+              </div>
+            </section>
+
+            <!-- Declaración jurada -->
+            <section class="form-step active" data-step="7">
+              <h3>Declaración Jurada</h3>
+
+              <p style="color: var(--text-secondary); margin-bottom: 20px;">Declaro bajo juramento que los datos brindados son verídicos y me comprometo con el reglamento de becas del CUC.</p>
+
+              <div class="form-grid"> 
+                <div class="form-group">
+                  <label>Firma digital (nombre completo):</label>
+                  <input type="text" name="firma" class="input" required placeholder="Ej: Juan Pérez Rodríguez">
+                </div>
+
+                <div class="form-group">
+                  <label>Fecha:</label>
+                  <input type="date" name="fecha_firma" class="input" required>
+                </div>
+              </div>
+            </section>
+
+            <!-- Controles -->
+            <div class="form-actions">
+              <button type="submit" id="btnEnviar" class="btn btn-primary">Enviar Solicitud</button>
+            </div>
+          </form>
+
+          <div id="mensajeValidacion" class="alert-danger" style="display:none; margin-top: 20px; padding: 16px; border-radius: 8px; border-left: 4px solid var(--danger);"></div>
+
+          <div id="confirmacion" class="alert-info" style="display:none; margin-top: 20px; padding: 16px; border-radius: 8px; border-left: 4px solid var(--success);">
+            <h4 style="color: var(--success); margin-bottom: 8px;">✅ Solicitud enviada correctamente</h4>
+            <p style="color: var(--text-secondary); font-size: 14px;">Sus datos han sido almacenados temporalmente en su navegador.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="formulario.js"></script>
+  <script src="theme-toggle.js"></script>
+</body>
+</html>

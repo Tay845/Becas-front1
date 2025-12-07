@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Aspirantes - Sistema de Becas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme-styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" id="mobileMenuToggleAspirant">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1 class="logo">Portal de Aspirantes</h1>
+        </div>
+        <div class="header-right">
+            <button class="btn-icon" title="Notificaciones">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 6.5a5 5 0 1 0-10 0c0 5-2 7-2 7h14s-2-2-2-7zM11.5 17a1.5 1.5 0 0 1-3 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span class="badge">1</span>
+            </button>
+            <div class="user-menu">
+                <span class="user-name" id="aspirantUserName">María García</span>
+                <button class="btn btn-secondary btn-sm" onclick="logout()" style="margin-left: 10px;">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebarAspirant">
+            <nav class="nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Principal</span>
+                    <a href="#" class="nav-item active" data-view="aspirant-dashboard">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="11" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="3" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="11" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mi Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Solicitudes</span>
+                    <a href="#" class="nav-item" data-view="aspirant-solicitar">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Solicitar Beca</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="aspirant-resultados">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Resultados</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="aspirant-apelacion">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M12 2l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Apelación</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Mi Información</span>
+                    <a href="#" class="nav-item" data-view="aspirant-documentos">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 4h12v3H4zM4 7v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mis Documentos</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="aspirant-perfil">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 17v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mi Perfil</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="aspirant-ayuda">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10 14h.01M10 6v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Ayuda</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Aspirant Dashboard View -->
+            <div id="aspirant-dashboard-view" class="view active">
+                <div class="view-header">
+                    <div>
+                        <h2>Bienvenida, María García</h2>
+                        <p class="text-muted">Estado de tu solicitud de beca</p>
+                    </div>
+                </div>
+
+                <!-- Status Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card" id="stat-solicitudes">
+                        <div class="stat-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Solicitudes Activas</div>
+                            <div class="stat-value" id="stat-solicitudes-value">1</div>
+                            <div class="stat-change" id="stat-solicitudes-change">En evaluación</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="stat-documentos">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 2h8l4 4v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Documentos</div>
+                            <div class="stat-value" id="stat-documentos-value">7/10</div>
+                            <div class="stat-change" id="stat-documentos-change">3 pendientes</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="stat-estado">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M17 10a7 7 0 1 1-2-4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Estado de Solicitud</div>
+                            <div class="stat-value" id="stat-estado-value">Evaluando</div>
+                            <div class="stat-change positive" id="stat-estado-change">En análisis socioeconómico</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card" id="stat-proxima">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Próxima Etapa</div>
+                            <div class="stat-value" id="stat-proxima-value">Comité</div>
+                            <div class="stat-change" id="stat-proxima-change">Semana 4 Abr</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Acciones Rápidas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-card">
+                                <div class="quick-action-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h4>Nueva Solicitud</h4>
+                                <p>Solicita otra beca</p>
+                            </button>
+
+                            <button class="quick-action-card">
+                                <div class="quick-action-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 4h12v3H4z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <h4>Subir Documentos</h4>
+                                <p>Completa tu expediente</p>
+                            </button>
+
+                            <button class="quick-action-card">
+                                <div class="quick-action-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <h4>Ver Resultados</h4>
+                                <p>Consulta tu estado</p>
+                            </button>
+
+                            <button class="quick-action-card">
+                                <div class="quick-action-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <h4>Ver Convocatorias</h4>
+                                <p>Explora más becas</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <!-- Current Application Status -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Mi Solicitud Actual</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="current-application">
+                                <div class="app-header">
+                                    <h4>Beca Académica 2024-1</h4>
+                                    <span class="badge badge-info">En Evaluación</span>
+                                </div>
+                                <div class="app-timeline">
+                                    <div class="app-step completed">
+                                        <div class="step-icon">✓</div>
+                                        <div class="step-text">
+                                            <div class="step-name">Solicitud Recibida</div>
+                                            <div class="step-date">15 Ene 2024</div>
+                                        </div>
+                                    </div>
+                                    <div class="app-step completed">
+                                        <div class="step-icon">✓</div>
+                                        <div class="step-text">
+                                            <div class="step-name">Revisión Administrativa</div>
+                                            <div class="step-date">18 Ene 2024</div>
+                                        </div>
+                                    </div>
+                                    <div class="app-step active">
+                                        <div class="step-icon">⟳</div>
+                                        <div class="step-text">
+                                            <div class="step-name">Análisis Socioeconómico</div>
+                                            <div class="step-date">En proceso...</div>
+                                        </div>
+                                    </div>
+                                    <div class="app-step">
+                                        <div class="step-icon">○</div>
+                                        <div class="step-text">
+                                            <div class="step-name">Evaluación Académica</div>
+                                            <div class="step-date">Próximo</div>
+                                        </div>
+                                    </div>
+                                    <div class="app-step">
+                                        <div class="step-icon">○</div>
+                                        <div class="step-text">
+                                            <div class="step-name">Comité de Becas</div>
+                                            <div class="step-date">Próximo</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Notificaciones</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="notifications-list">
+                                <div class="notification-item unread">
+                                    <div class="notification-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">📝</div>
+                                    <div class="notification-content">
+                                        <h4>Solicitud en Análisis</h4>
+                                        <p>Tu solicitud está siendo analizada socioeconómicamente</p>
+                                        <span class="notification-time">Hace 3 horas</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">⚠</div>
+                                    <div class="notification-content">
+                                        <h4>Documentos Pendientes</h4>
+                                        <p>Faltan 3 documentos. Sube antes del 31 Ene 2024</p>
+                                        <span class="notification-time">Hace 2 días</span>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">📢</div>
+                                    <div class="notification-content">
+                                        <h4>Nueva Convocatoria</h4>
+                                        <p>Se abre nueva convocatoria de becas deportivas</p>
+                                        <span class="notification-time">Hace 5 días</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Process Timeline -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Cronograma del Proceso</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline" id="cronogramaTimeline">
+                            <div class="timeline-item completed" id="timeline-convocatoria">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Convocatoria Abierta</h4>
+                                    <p>15 Ene - 31 Ene 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item completed" id="timeline-revision">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Revisión Administrativa</h4>
+                                    <p>01 Feb - 05 Feb 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item active" id="timeline-analisis">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Análisis Socioeconómico</h4>
+                                    <p>06 Feb - 15 Feb 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" id="timeline-academica">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Evaluación Académica</h4>
+                                    <p>16 Feb - 20 Feb 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" id="timeline-comite">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Sesión del Comité</h4>
+                                    <p>21 Feb 2024</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item" id="timeline-comunicacion">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <h4>Comunicación de Resultados</h4>
+                                    <p>22 Feb - 24 Feb 2024</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Convocatorias View (same as student) -->
+            
+
+            <!-- Solicitar Beca View -->
+            <div id="aspirant-solicitar-view" class="view">
+                <div id="form-container"></div>
+            </div>
+
+            <!-- Mis Solicitudes View -->
+            
+
+            <div id="aspirant-resultados-view" class="view">
+                <div id="resultado-container"></div>
+            </div>
+
+            
+            <div id="aspirant-apelacion-view" class="view">
+
+    <!-- HEADER -->
+    <div class="view-header">
+        <div>
+            <h2>Solicitud de Apelación</h2>
+            <p class="text-muted">Solicita una revisión formal del resultado de tu evaluación.</p>
+        </div>
+    </div>
+
+    <!-- ¿QUÉ ES UNA APELACIÓN? -->
+    <div class="card card-elevated">
+        <div class="card-header">
+            <h3>¿Qué es una Apelación?</h3>
+        </div>
+        <div class="card-body">
+            <p class="info-text">
+                Una apelación es una solicitud formal donde el aspirante pide una revisión del resultado
+                obtenido durante la evaluación socioeconómica o académica.  
+                <br><br>
+                Tu caso será analizado nuevamente por el personal correspondiente y recibirás una resolución
+                en tu panel.
+            </p>
+        </div>
+    </div>
+
+    <!-- LISTA DE APELACIONES -->
+    <div class="card card-elevated">
+        <div class="card-header">
+            <h3>Historial de Apelaciones</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="appeals-list" id="appealsList" style="margin-bottom: 30px;">
+    <p style="padding: 10px; color: var(--text-secondary);">Cargando apelaciones...</p>
+</div>
+
+            <!-- FORMULARIO DE APELACIÓN -->
+            <div class="section-divider"></div>
+
+            <h4 class="form-title">Nueva apelación</h4>
+
+            <form class="appeal-form" id="appealForm">
+    <div class="form-section">
+        <label for="motivoApelacion" class="form-label">Explique el motivo de su apelación:</label>
+        <textarea id="motivoApelacion"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Describa por qué desea apelar..."
+                  maxlength="500"></textarea>
+
+        <div style="text-align: right; margin-top: 5px; font-size: 13px;">
+            <span id="charCount">0</span>/500 caracteres
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <button type="button" id="btnCancelarApelacion" class="btn btn-secondary">
+            Cancelar
+        </button>
+        <button type="submit" id="btnEnviarApelacion" class="btn btn-primary" disabled>
+            Enviar Apelación
+        </button>
+    </div>
+</form>
+        </div>
+    </div>
+
+</div>
+    <div id="aspirant-documentos-view" class="view">
+    <div class="view-header">
+        <div>
+            <h2>Mis Documentos</h2>
+            <p class="text-muted">Consulta y carga los documentos requeridos para tu beca</p>
+        </div>
+        <button class="btn btn-primary" id="btnAbrirSubirDoc">Subir Documento</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="docs-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                📄
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Total Documentos</div>
+                <div class="stat-value" id="stat-docs-total">0</div>
+                <div class="stat-change">Requeridos y adicionales</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                ✅
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Válidos</div>
+                <div class="stat-value" id="stat-docs-validos">0</div>
+                <div class="stat-change positive">Aceptados</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">
+                ⚠
+            </div>
+            <div class="stat-content">
+                <div class="stat-label">Pendientes / Revisar</div>
+                <div class="stat-value" id="stat-docs-pendientes">0</div>
+                <div class="stat-change">Por validar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de documentos -->
+    <div class="card">
+        <div class="card-header">
+            <h3>Documentos Cargados</h3>
+        </div>
+        <div class="card-body">
+            <div class="documents-list" id="documents-list">
+                <!-- Se llena por JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal / Panel para subir documento -->
+    <div class="modal-backdrop" id="modalSubirDoc" style="display:none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Subir Documento</h3>
+                <button type="button" class="btn-icon" id="btnCerrarModalDoc">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="formSubirDoc">
+                    <div class="form-group">
+                        <label for="selectTipoDoc">Tipo de documento</label>
+                        <select id="selectTipoDoc" class="select" required>
+                            <option value="">Seleccione una opción</option>
+                            <option value="1">Identificación oficial</option>
+                            <option value="2">Constancia de estudios</option>
+                            <option value="3">Historial académico</option>
+                            <option value="4">Comprobante de domicilio</option>
+                            <option value="5">Comprobante de ingresos</option>
+                            <option value="6">Otro documento</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputArchivoDoc">Archivo</label>
+                        <div class="upload-dropzone" id="dropzoneDoc">
+                            <p id="dropzoneText">Arrastra un archivo aquí o haz clic para seleccionar</p>
+                            <input type="file" id="inputArchivoDoc" style="display:none;" required />
+                        </div>
+                        <small class="text-muted">Formatos permitidos: PDF, JPG, PNG. Máx. 5MB</small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelarSubirDoc">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Subir Documento</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <!-- Mi Perfil View -->
+            <div id="aspirant-perfil-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Mi Perfil</h2>
+                        <p class="text-muted">Información personal y académica</p>
+                    </div>
+                    <button class="btn btn-primary">Editar Perfil</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Información Personal</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="profile-section">
+                            <div class="profile-info">
+                                <div class="info-row">
+                                    <span class="label">Nombre Completo:</span>
+                                    <span class="value" id="perfil-nombre">María García Hernández</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Correo Electrónico:</span>
+                                    <span class="value" id="perfil-email">maria.garcia@email.com</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div id="aspirant-ayuda-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Ayuda y Soporte</h2>
+                        <p class="text-muted">Preguntas frecuentes y contacto</p>
+                    </div>
+                    <button class="btn btn-primary">Contactar Soporte</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Preguntas Frecuentes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Cómo solicito una beca?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Para solicitar una beca como aspirante:</p>
+                                    <ol>
+                                        <li>Revisa las convocatorias disponibles</li>
+                                        <li>Verifica que cumples con los requisitos</li>
+                                        <li>Completa el formulario de solicitud</li>
+                                        <li>Sube todos los documentos requeridos</li>
+                                        <li>Envía tu solicitud antes de la fecha límite</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Cuánto tiempo tarda evaluar mi solicitud?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>El proceso de evaluación toma aproximadamente 4 a 6 semanas:</p>
+                                    <ul>
+                                        <li>Revisión Administrativa: 3-5 días</li>
+                                        <li>Análisis Socioeconómico: 10-15 días</li>
+                                        <li>Evaluación Académica: 5-7 días</li>
+                                        <li>Comité: según calendario</li>
+                                        <li>Comunicación: 2-3 días después</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Qué documentos son obligatorios?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Los documentos obligatorios son:</p>
+                                    <ul>
+                                        <li>Identificación oficial vigente</li>
+                                        <li>Constancia de estudios</li>
+                                        <li>Historial académico (Kardex)</li>
+                                        <li>Comprobante de domicilio</li>
+                                        <li>Fotografía tamaño infantil</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Puedo apelar si me rechazan?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Sí, tienes 5 días hábiles a partir de la notificación para presentar una apelación. Debes proporcionar evidencia o argumentos adicionales que respalden tu caso.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Qué pasa si no envío mis documentos a tiempo?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Si no envías tus documentos en la fecha límite, tu solicitud será rechazada. Sin embargo, podrás volver a solicitar en la próxima convocatoria.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Contacto</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-options">
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">📧</div>
+                                <h4>Correo Electrónico</h4>
+                                <p>becas@universidad.edu</p>
+                                <p class="text-muted">Respuesta en 24-48 horas</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">📞</div>
+                                <h4>Teléfono</h4>
+                                <p>(555) 000-0000 ext. 123</p>
+                                <p class="text-muted">Lun-Vie 9:00 AM - 5:00 PM</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">🏢</div>
+                                <h4>Oficina de Becas</h4>
+                                <p>Edificio Administrativo, 2do piso</p>
+                                <p class="text-muted">Lun-Vie 9:00 AM - 5:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="sincronizador.js"></script>
+    <script src="aspirante.js"></script>
+    <script src="theme-toggle.js"></script>
+    
+</body>
+</html>

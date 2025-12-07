@@ -1,0 +1,2099 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Estudiantes - Sistema de Becas</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="theme-styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <button class="mobile-menu-toggle" id="mobileMenuToggleStudent">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <h1 class="logo">Portal de Estudiante Becado</h1>
+        </div>
+        <div class="header-right">
+            <button class="btn-icon" title="Notificaciones">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 6.5a5 5 0 1 0-10 0c0 5-2 7-2 7h14s-2-2-2-7zM11.5 17a1.5 1.5 0 0 1-3 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <span class="badge">2</span>
+            </button>
+            <div class="user-menu">
+                <span class="user-name" id="studentUserName"></span>
+                <button class="btn btn-secondary btn-sm" onclick="logout()" style="margin-left: 10px;">Cerrar Sesión</button>
+            </div>
+        </div>
+    </header>
+    
+    <script>
+        // Llenar dinámicamente el nombre del usuario
+        const studentName = sessionStorage.getItem("userName") || "Estudiante";
+        document.getElementById("studentUserName").textContent = studentName;
+    </script>
+
+    <div class="layout">
+        <aside class="sidebar" id="sidebarStudent">
+            <nav class="nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Principal</span>
+                    <a href="#" class="nav-item active" data-view="student-dashboard">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="3" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="11" y="3" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="3" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                            <rect x="11" y="11" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mi Dashboard</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Becas</span>
+                    <a href="#" class="nav-item" data-view="student-convocatorias">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M6 2h8l4 4v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Convocatorias</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-solicitar">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Solicitar Beca</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-mis-solicitudes">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mis Solicitudes</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-mi-beca">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2"/>
+                            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <span>Mi Beca Actual</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-renovacion">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M17 10a7 7 0 1 1-2-4.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                            <path d="M17 4v6h-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Renovar Beca</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <span class="nav-section-title">Mi Información</span>
+                    <a href="#" class="nav-item" data-view="student-documentos">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4 4h12v3H4zM4 7v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V7" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mis Documentos</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-perfil">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M3 17v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="1.5"/>
+                        </svg>
+                        <span>Mi Perfil</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="student-ayuda">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                            <path d="M10 14h.01M10 6v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Ayuda</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div id="student-dashboard-view" class="view active">
+                <div class="view-header">
+                    <div>
+                        <span class="user-name" id="studentUserName"></span>
+                        <h2>Bienvenido, <span id="welcomeUserName">Juan Pérez</span></h2>
+                        <p class="text-muted">Aquí puedes ver el estado de tus becas y solicitudes</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2"/>
+                                <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Beca Actual</div>
+                            <div class="stat-value" id="dash-beca-nombre">Sin beca activa</div>
+                            <div class="stat-change" id="dash-beca-vigencia">—</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Promedio Actual</div>
+                            <div class="stat-value" id="dash-promedio-valor">—</div>
+                            <div class="stat-change" id="dash-promedio-estado">Sin datos</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Solicitudes</div>
+                            <div class="stat-value" id="dash-solicitudes-resumen">0</div>
+                            <div class="stat-change" id="dash-solicitudes-detalle">Sin solicitudes</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M6 2h8l4 4v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Documentos</div>
+                            <div class="stat-value" id="dash-docs-resumen">0/0</div>
+                            <div class="stat-change" id="dash-docs-detalle">Sin documentos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Acciones Rápidas</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="quick-actions-grid">
+                            <button class="quick-action-card" data-action="solicitar-beca">
+                                <div class="quick-action-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M10 3v14M3 10h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h4>Solicitar Beca</h4>
+                                <p>Aplica a una nueva convocatoria</p>
+                            </button>
+
+                            <button class="quick-action-card" data-action="renovar-beca">
+                                <div class="quick-action-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M17 10a7 7 0 1 1-2-4.9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h4>Renovar Beca</h4>
+                                <p>Solicita la renovación</p>
+                            </button>
+
+                            <button class="quick-action-card" data-action="subir-documentos">
+                                <div class="quick-action-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M4 4h12v3H4z" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <h4>Subir Documentos</h4>
+                                <p>Completa tu expediente</p>
+                            </button>
+
+                            <button class="quick-action-card" data-action="ver-convocatorias">
+                                <div class="quick-action-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2"/>
+                                    </svg>
+                                </div>
+                                <h4>Ver Convocatorias</h4>
+                                <p>Explora becas disponibles</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Notificaciones</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="notifications-list" id="notificationsContainer"></div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Estado de Mi Beca</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="scholarship-status">
+                                <div class="status-header">
+                                    <h4 id="mbeca-nombre">Sin beca activa</h4>
+                                    <span class="badge" id="mbeca-estado">—</span>
+                                </div>
+
+                                <div class="status-details">
+                                    <div class="status-item">
+                                        <span class="label">Porcentaje:</span>
+                                        <span class="value" id="mbeca-porcentaje">—</span>
+                                    </div>
+
+                                    <div class="status-item">
+                                        <span class="label">Monto:</span>
+                                        <span class="value" id="mbeca-valor">—</span>
+                                    </div>
+
+                                    <div class="status-item">
+                                        <span class="label">Vigencia:</span>
+                                        <span class="value" id="mbeca-vigencia">—</span>
+                                    </div>
+
+                                    <div class="status-item">
+                                        <span class="label">Promedio requerido:</span>
+                                        <span class="value" id="mbeca-promreq">—</span>
+                                    </div>
+
+                                    <div class="status-item">
+                                        <span class="label">Tu promedio:</span>
+                                        <span class="value" id="mbeca-promedio">—</span>
+                                    </div>
+                                </div>
+
+                                <div class="status-progress">
+                                    <div class="progress-label">Cumplimiento</div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" id="mbeca-progress"></div>
+                                    </div>
+                                    <div class="progress-text" id="mbeca-progress-text">—</div>
+                                </div>
+
+                                <button class="btn btn-primary btn-block" onclick="
+                                document.querySelector('[data-view=\'student-mi-beca\']').click();
+                                ">Ver Detalles Completos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Fechas Importantes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline" id="timelineBeca"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-convocatorias-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Convocatorias Disponibles</h2>
+                        <p class="text-muted">Explora las becas disponibles y sus requisitos</p>
+                    </div>
+                </div>
+
+                <div class="filters-bar">
+                    <select class="select">
+                        <option value="">Todos los tipos</option>
+                        <option value="academica">Académica</option>
+                        <option value="socioeconomica">Socioeconómica</option>
+                        <option value="deportiva">Deportiva</option>
+                        <option value="cultural">Cultural</option>
+                    </select>
+                    <select class="select">
+                        <option value="">Todas las fechas</option>
+                        <option value="activas">Activas</option>
+                        <option value="proximas">Próximas</option>
+                    </select>
+                    <button class="btn btn-primary">Aplicar Filtros</button>
+                </div>
+
+                <div class="convocatorias-student-grid">
+                    <div class="convocatoria-student-card">
+                        <div class="convocatoria-badge badge-success">Activa</div>
+                        <h3>Becas Académicas 2024-1</h3>
+                        <p class="convocatoria-description">Beca para estudiantes con excelencia académica. Cubre del 50% al 100% de la colegiatura.</p>
+                        <div class="convocatoria-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <div>
+                                    <div class="detail-label">Fecha límite</div>
+                                    <div class="detail-value">31 Ene 2024</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📊</span>
+                                <div>
+                                    <div class="detail-label">Promedio mínimo</div>
+                                    <div class="detail-value">8.5</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">💰</span>
+                                <div>
+                                    <div class="detail-label">Cobertura</div>
+                                    <div class="detail-value">50% - 100%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="convocatoria-actions">
+                            <button class="btn btn-primary btn-block">Solicitar Ahora</button>
+                            <button class="btn btn-secondary btn-block">Ver Requisitos</button>
+                        </div>
+                    </div>
+
+                    <div class="convocatoria-student-card">
+                        <div class="convocatoria-badge badge-success">Activa</div>
+                        <h3>Becas Socioeconómicas 2024-1</h3>
+                        <p class="convocatoria-description">Apoyo económico para estudiantes en situación de vulnerabilidad. Requiere estudio socioeconómico.</p>
+                        <div class="convocatoria-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <div>
+                                    <div class="detail-label">Fecha límite</div>
+                                    <div class="detail-value">31 Ene 2024</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📊</span>
+                                <div>
+                                    <div class="detail-label">Promedio mínimo</div>
+                                    <div class="detail-value">7.5</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">💰</span>
+                                <div>
+                                    <div class="detail-label">Cobertura</div>
+                                    <div class="detail-value">25% - 100%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="convocatoria-actions">
+                            <button class="btn btn-primary btn-block">Solicitar Ahora</button>
+                            <button class="btn btn-secondary btn-block">Ver Requisitos</button>
+                        </div>
+                    </div>
+
+                    <div class="convocatoria-student-card">
+                        <div class="convocatoria-badge badge-info">Próximamente</div>
+                        <h3>Becas Deportivas 2024-2</h3>
+                        <p class="convocatoria-description">Para estudiantes destacados en disciplinas deportivas que representen a la universidad.</p>
+                        <div class="convocatoria-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">📅</span>
+                                <div>
+                                    <div class="detail-label">Apertura</div>
+                                    <div class="detail-value">01 Feb 2024</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">📊</span>
+                                <div>
+                                    <div class="detail-label">Promedio mínimo</div>
+                                    <div class="detail-value">7.5</div>
+                                </div>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-icon">💰</span>
+                                <div>
+                                    <div class="detail-label">Cobertura</div>
+                                    <div class="detail-value">30% - 75%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="convocatoria-actions">
+                            <button class="btn btn-secondary btn-block" disabled>Próximamente</button>
+                            <button class="btn btn-secondary btn-block">Ver Requisitos</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-solicitar-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Solicitar Beca</h2>
+                        <p class="text-muted">Completa el formulario para aplicar a una beca</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <form class="scholarship-form">
+                            <div class="form-section">
+                                <h3>Información Personal</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Nombre Completo</label>
+                                        <input type="text" class="input" value="Juan Pérez" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Matrícula</label>
+                                        <input type="text" class="input" value="2021-0001" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Correo Electrónico</label>
+                                        <input type="email" class="input" value="juan.perez@universidad.edu" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Teléfono</label>
+                                        <input type="tel" class="input" placeholder="(555) 123-4567">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Tipo de Beca</h3>
+                                <div class="form-group">
+                                    <label>Selecciona el tipo de beca</label>
+                                    <select class="select">
+                                        <option value="">Selecciona una opción</option>
+                                        <option value="academica">Beca Académica</option>
+                                        <option value="socioeconomica">Beca Socioeconómica</option>
+                                        <option value="deportiva">Beca Deportiva</option>
+                                        <option value="cultural">Beca Cultural</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Convocatoria</label>
+                                    <select class="select">
+                                        <option value="">Selecciona una convocatoria</option>
+                                        <option value="2024-1-academica">Becas Académicas 2024-1</option>
+                                        <option value="2024-1-socio">Becas Socioeconómicas 2024-1</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Información Académica</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label>Carrera</label>
+                                        <input type="text" class="input" value="Ingeniería en Sistemas" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Semestre Actual</label>
+                                        <input type="text" class="input" value="6to Semestre" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Promedio General</label>
+                                        <input type="text" class="input" value="9.2" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Créditos Cursados</label>
+                                        <input type="text" class="input" value="180" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Documentos Requeridos</h3>
+                                <div class="upload-list">
+                                    <div class="upload-item">
+                                        <div class="upload-info">
+                                            <span class="upload-icon">📄</span>
+                                            <div>
+                                                <div class="upload-name">Identificación Oficial</div>
+                                                <div class="upload-description">INE, Pasaporte o Cédula</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-sm">Subir Archivo</button>
+                                    </div>
+                                    <div class="upload-item">
+                                        <div class="upload-info">
+                                            <span class="upload-icon">📄</span>
+                                            <div>
+                                                <div class="upload-name">Constancia de Estudios</div>
+                                                <div class="upload-description">Emitida por la universidad</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-sm">Subir Archivo</button>
+                                    </div>
+                                    <div class="upload-item">
+                                        <div class="upload-info">
+                                            <span class="upload-icon">📄</span>
+                                            <div>
+                                                <div class="upload-name">Historial Académico</div>
+                                                <div class="upload-description">Kardex oficial</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-sm">Subir Archivo</button>
+                                    </div>
+                                    <div class="upload-item">
+                                        <div class="upload-info">
+                                            <span class="upload-icon">📄</span>
+                                            <div>
+                                                <div class="upload-name">Comprobante de Ingresos</div>
+                                                <div class="upload-description">Últimos 3 meses</div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-sm">Subir Archivo</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Carta de Motivos</h3>
+                                <div class="form-group">
+                                    <label>Explica por qué solicitas esta beca (máximo 500 palabras)</label>
+                                    <textarea class="textarea" rows="6" placeholder="Escribe aquí tu carta de motivos..."></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-secondary">Guardar Borrador</button>
+                                <button type="submit" class="btn btn-primary">Enviar Solicitud</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-mis-solicitudes-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Mis Solicitudes</h2>
+                        <p class="text-muted">Historial de solicitudes de becas</p>
+                    </div>
+                </div>
+
+                <div class="solicitudes-list">
+                    <div class="solicitud-card">
+                        <div class="solicitud-header">
+                            <div>
+                                <h3>Beca Académica 2024-1</h3>
+                                <p class="text-muted">Solicitud #2024-156</p>
+                            </div>
+                            <span class="badge badge-success">Aprobada</span>
+                        </div>
+                        <div class="solicitud-body">
+                            <div class="solicitud-timeline">
+                                <div class="timeline-step completed">
+                                    <div class="step-marker">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Solicitud Enviada</div>
+                                        <div class="step-date">15 Ene 2024</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step completed">
+                                    <div class="step-marker">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">En Evaluación</div>
+                                        <div class="step-date">20 Ene 2024</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step completed">
+                                    <div class="step-marker">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Comité de Becas</div>
+                                        <div class="step-date">25 Ene 2024</div>
+                                    </div>
+                                </div>
+                                <div class="timeline-step completed">
+                                    <div class="step-marker">✓</div>
+                                    <div class="step-content">
+                                        <div class="step-title">Aprobada - 100%</div>
+                                        <div class="step-date">28 Ene 2024</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="solicitud-footer">
+                            <button class="btn btn-secondary btn-sm">Ver Detalles</button>
+                            <button class="btn btn-secondary btn-sm">Descargar Carta</button>
+                        </div>
+                    </div>
+
+                    <div class="solicitud-card">
+                        <div class="solicitud-header">
+                            <div>
+                                <h3>Beca Socioeconómica 2023-2</h3>
+                                <p class="text-muted">Solicitud #2023-089</p>
+                            </div>
+                            <span class="badge badge-secondary">Finalizada</span>
+                        </div>
+                        <div class="solicitud-body">
+                            <div class="solicitud-info">
+                                <div class="info-item">
+                                    <span class="label">Resultado:</span>
+                                    <span class="value">Aprobada - 75%</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Período:</span>
+                                    <span class="value">Ago - Dic 2023</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Fecha de solicitud:</span>
+                                    <span class="value">15 Jul 2023</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="solicitud-footer">
+                            <button class="btn btn-secondary btn-sm">Ver Detalles</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-mi-beca-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Mi Beca Actual</h2>
+                        <p class="text-muted">Detalles y requisitos de tu beca activa</p>
+                    </div>
+                    <select class="select-sm" id="studentQuarterFilter">
+                        <option value="current">Cuatrimestre actual (2024-1)</option>
+                        <option value="2023-3">2023-3 (Sep-Dic)</option>
+                        <option value="2023-2">2023-2 (May-Ago)</option>
+                        <option value="2023-1">2023-1 (Ene-Abr)</option>
+                    </select>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Beca Académica 2024-1</h3>
+                        <span class="badge badge-success">Activa</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="beca-details-grid">
+                            <div class="beca-detail-card">
+                                <div class="detail-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">💰</div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Porcentaje de Beca</div>
+                                    <div class="detail-value">100%</div>
+                                </div>
+                            </div>
+                            <div class="beca-detail-card">
+                                <div class="detail-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">📅</div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Vigencia</div>
+                                    <div class="detail-value">Ene - Jul 2024</div>
+                                </div>
+                            </div>
+                            <div class="beca-detail-card">
+                                <div class="detail-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">💵</div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Monto Semestral</div>
+                                    <div class="detail-value">$5,000</div>
+                                </div>
+                            </div>
+                            <div class="beca-detail-card">
+                                <div class="detail-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">📊</div>
+                                <div class="detail-content">
+                                    <div class="detail-label">Promedio Requerido</div>
+                                    <div class="detail-value">8.0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Requisitos y Cumplimiento</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="requirements-progress">
+                            <div class="requirement-progress-item">
+                                <div class="requirement-header">
+                                    <div>
+                                        <h4>Promedio Académico</h4>
+                                        <p>Mantener promedio mínimo de 8.0</p>
+                                    </div>
+                                    <span class="badge badge-success">Cumpliendo</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%; background: #10b981;"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span>Tu promedio: 9.2</span>
+                                    <span>Requerido: 8.0</span>
+                                </div>
+                            </div>
+
+                            <div class="requirement-progress-item">
+                                <div class="requirement-header">
+                                    <div>
+                                        <h4>Carga Académica</h4>
+                                        <p>Mínimo 12 créditos por semestre</p>
+                                    </div>
+                                    <span class="badge badge-success">Cumpliendo</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%; background: #10b981;"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span>Tus créditos: 18</span>
+                                    <span>Requerido: 12</span>
+                                </div>
+                            </div>
+
+                            <div class="requirement-progress-item">
+                                <div class="requirement-header">
+                                    <div>
+                                        <h4>Asistencia</h4>
+                                        <p>Mínimo 90% de asistencia</p>
+                                    </div>
+                                    <span class="badge badge-success">Cumpliendo</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 98%; background: #10b981;"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span>Tu asistencia: 98%</span>
+                                    <span>Requerido: 90%</span>
+                                </div>
+                            </div>
+
+                            <div class="requirement-progress-item">
+                                <div class="requirement-header">
+                                    <div>
+                                        <h4>Documentación</h4>
+                                        <p>Mantener expediente completo</p>
+                                    </div>
+                                    <span class="badge badge-warning">Pendiente</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%; background: #f59e0b;"></div>
+                                </div>
+                                <div class="progress-info">
+                                    <span>Completado: 8/10 documentos</span>
+                                    <span>Faltan: 2 documentos</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Compromisos y Obligaciones</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="commitments-list">
+                            <div class="commitment-item">
+                                <span class="commitment-icon">✓</span>
+                                <div class="commitment-content">
+                                    <h4>Mantener promedio mínimo de 8.0</h4>
+                                    <p>Revisión semestral del historial académico</p>
+                                </div>
+                            </div>
+                            <div class="commitment-item">
+                                <span class="commitment-icon">✓</span>
+                                <div class="commitment-content">
+                                    <h4>Cursar mínimo 12 créditos por semestre</h4>
+                                    <p>Carga académica completa</p>
+                                </div>
+                            </div>
+                            <div class="commitment-item">
+                                <span class="commitment-icon">✓</span>
+                                <div class="commitment-content">
+                                    <h4>Asistir regularmente a clases</h4>
+                                    <p>Mínimo 90% de asistencia</p>
+                                </div>
+                            </div>
+                            <div class="commitment-item">
+                                <span class="commitment-icon">✓</span>
+                                <div class="commitment-content">
+                                    <h4>Reportar cambios en situación académica</h4>
+                                    <p>Notificar cualquier cambio relevante</p>
+                                </div>
+                            </div>
+                            <div class="commitment-item">
+                                <span class="commitment-icon">✓</span>
+                                <div class="commitment-content">
+                                    <h4>Participar en actividades institucionales</h4>
+                                    <p>Cuando sea requerido por la universidad</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Mi Desempeño por Cuatrimestre</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="quarter-performance-list">
+                            <div class="quarter-performance-item">
+                                <div class="quarter-header">
+                                    <h4>2024-1 (Ene-Abr)</h4>
+                                    <span class="badge badge-success">Actual</span>
+                                </div>
+                                <div class="quarter-stats">
+                                    <div class="stat-item">
+                                        <span class="label">Promedio:</span>
+                                        <span class="value badge badge-success">9.2</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Créditos:</span>
+                                        <span class="value">18</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Materias:</span>
+                                        <span class="value">6/6 aprobadas</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Asistencia:</span>
+                                        <span class="value">98%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quarter-performance-item">
+                                <div class="quarter-header">
+                                    <h4>2023-3 (Sep-Dic)</h4>
+                                    <span class="badge badge-secondary">Completado</span>
+                                </div>
+                                <div class="quarter-stats">
+                                    <div class="stat-item">
+                                        <span class="label">Promedio:</span>
+                                        <span class="value badge badge-success">9.0</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Créditos:</span>
+                                        <span class="value">18</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Materias:</span>
+                                        <span class="value">6/6 aprobadas</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Asistencia:</span>
+                                        <span class="value">96%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="quarter-performance-item">
+                                <div class="quarter-header">
+                                    <h4>2023-2 (May-Ago)</h4>
+                                    <span class="badge badge-secondary">Completado</span>
+                                </div>
+                                <div class="quarter-stats">
+                                    <div class="stat-item">
+                                        <span class="label">Promedio:</span>
+                                        <span class="value badge badge-success">8.8</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Créditos:</span>
+                                        <span class="value">15</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Materias:</span>
+                                        <span class="value">5/5 aprobadas</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="label">Asistencia:</span>
+                                        <span class="value">94%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="performance-summary">
+                            <h4>Resumen de Tendencia</h4>
+                            <div class="trend-stats">
+                                <div class="trend-item positive">
+                                    <span class="trend-icon">📈</span>
+                                    <div>
+                                        <div class="trend-label">Promedio</div>
+                                        <div class="trend-value">+0.4 en últimos 3 cuatrimestres</div>
+                                    </div>
+                                </div>
+                                <div class="trend-item positive">
+                                    <span class="trend-icon">✅</span>
+                                    <div>
+                                        <div class="trend-label">Aprobación</div>
+                                        <div class="trend-value">100% de materias aprobadas</div>
+                                    </div>
+                                </div>
+                                <div class="trend-item positive">
+                                    <span class="trend-icon">📊</span>
+                                    <div>
+                                        <div class="trend-label">Asistencia</div>
+                                        <div class="trend-value">Promedio 96% (Excelente)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-renovacion-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Renovación de Beca</h2>
+                        <p class="text-muted">Solicita la renovación de tu beca para el próximo período</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Estado de Renovación</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="renewal-status">
+                            <div class="renewal-info">
+                                <h4>Período de Renovación: 2024-2</h4>
+                                <p>La convocatoria de renovación estará disponible a partir del 01 de Junio 2024</p>
+                            </div>
+                            <div class="renewal-countdown">
+                                <div class="countdown-item">
+                                    <div class="countdown-value">45</div>
+                                    <div class="countdown-label">Días</div>
+                                </div>
+                                <div class="countdown-separator">:</div>
+                                <div class="countdown-item">
+                                    <div class="countdown-value">12</div>
+                                    <div class="countdown-label">Horas</div>
+                                </div>
+                                <div class="countdown-separator">:</div>
+                                <div class="countdown-item">
+                                    <div class="countdown-value">30</div>
+                                    <div class="countdown-label">Minutos</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Requisitos para Renovación</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="renewal-requirements">
+                            <div class="renewal-requirement-item completed">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-content">
+                                    <h4>Promedio Académico</h4>
+                                    <p>Mantener promedio mínimo de 8.0</p>
+                                    <span class="requirement-status">Tu promedio: 9.2 ✓</span>
+                                </div>
+                            </div>
+                            <div class="renewal-requirement-item completed">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-content">
+                                    <h4>Carga Académica</h4>
+                                    <p>Haber cursado mínimo 12 créditos</p>
+                                    <span class="requirement-status">Créditos cursados: 18 ✓</span>
+                                </div>
+                            </div>
+                            <div class="renewal-requirement-item pending">
+                                <div class="requirement-icon">⏱</div>
+                                <div class="requirement-content">
+                                    <h4>Documentación Actualizada</h4>
+                                    <p>Expediente completo y actualizado</p>
+                                    <span class="requirement-status">Faltan 2 documentos</span>
+                                </div>
+                            </div>
+                            <div class="renewal-requirement-item completed">
+                                <div class="requirement-icon">✓</div>
+                                <div class="requirement-content">
+                                    <h4>Sin Sanciones</h4>
+                                    <p>No tener sanciones disciplinarias</p>
+                                    <span class="requirement-status">Sin sanciones ✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Historial de Renovaciones</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Cuatrimestre</th>
+                                        <th>Tipo de Beca</th>
+                                        <th>Porcentaje</th>
+                                        <th>Promedio</th>
+                                        <th>Estado</th>
+                                        <th>Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span class="badge badge-info">2024-1</span></td>
+                                        <td>Académica</td>
+                                        <td>100%</td>
+                                        <td><span class="badge badge-success">9.2</span></td>
+                                        <td><span class="badge badge-success">Aprobada</span></td>
+                                        <td>15 Ene 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge badge-info">2023-3</span></td>
+                                        <td>Académica</td>
+                                        <td>100%</td>
+                                        <td><span class="badge badge-success">9.0</span></td>
+                                        <td><span class="badge badge-success">Aprobada</span></td>
+                                        <td>15 Ago 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="badge badge-info">2023-2</span></td>
+                                        <td>Socioeconómica</td>
+                                        <td>75%</td>
+                                        <td><span class="badge badge-success">8.8</span></td>
+                                        <td><span class="badge badge-success">Aprobada</span></td>
+                                        <td>15 Ene 2023</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="student-documentos-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Mis Documentos</h2>
+                        <p class="text-muted">Gestiona tu expediente digital</p>
+                    </div>
+                    <button class="btn btn-primary">Subir Documento</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Documentos Aprobados</div>
+                            <div class="stat-value">8</div>
+                            <div class="stat-change positive">Verificados</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Pendientes</div>
+                            <div class="stat-value">2</div>
+                            <div class="stat-change">Por subir</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Total de Archivos</div>
+                            <div class="stat-value">10</div>
+                            <div class="stat-change">En expediente</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-label">Completitud</div>
+                            <div class="stat-value">80%</div>
+                            <div class="stat-change">Del expediente</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Documentos Requeridos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="documents-list">
+                            <div class="document-item completed">
+                                <div class="document-icon">✓</div>
+                                <div class="document-info">
+                                    <h4>Identificación Oficial</h4>
+                                    <p>INE_JuanPerez.pdf - Subido el 10 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                    <button class="btn-icon" title="Reemplazar">🔄</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item completed">
+                                <div class="document-icon">✓</div>
+                                <div class="document-info">
+                                    <h4>Constancia de Estudios</h4>
+                                    <p>Constancia_2024.pdf - Subido el 10 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                    <button class="btn-icon" title="Reemplazar">🔄</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item completed">
+                                <div class="document-icon">✓</div>
+                                <div class="document-info">
+                                    <h4>Historial Académico (Kardex)</h4>
+                                    <p>Kardex_JuanPerez.pdf - Subido el 11 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                    <button class="btn-icon" title="Reemplazar">🔄</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item pending">
+                                <div class="document-icon">⏱</div>
+                                <div class="document-info">
+                                    <h4>Comprobante de Ingresos Familiares</h4>
+                                    <p>Requerido para beca socioeconómica</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-warning">Pendiente</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn btn-primary btn-sm">Subir Archivo</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item pending">
+                                <div class="document-icon">⏱</div>
+                                <div class="document-info">
+                                    <h4>Comprobante de Domicilio</h4>
+                                    <p>No mayor a 3 meses</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-warning">Pendiente</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn btn-primary btn-sm">Subir Archivo</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item completed">
+                                <div class="document-icon">✓</div>
+                                <div class="document-info">
+                                    <h4>Fotografía Tamaño Infantil</h4>
+                                    <p>Foto_JuanPerez.jpg - Subido el 10 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                    <button class="btn-icon" title="Reemplazar">🔄</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Documentos Adicionales</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="documents-list">
+                            <div class="document-item completed">
+                                <div class="document-icon">📄</div>
+                                <div class="document-info">
+                                    <h4>Carta de Motivos</h4>
+                                    <p>CartaMotivos_2024.pdf - Subido el 12 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                </div>
+                            </div>
+
+                            <div class="document-item completed">
+                                <div class="document-icon">📄</div>
+                                <div class="document-info">
+                                    <h4>Carta de Recomendación</h4>
+                                    <p>Recomendacion_Prof.pdf - Subido el 12 Ene 2024</p>
+                                </div>
+                                <div class="document-status">
+                                    <span class="badge badge-success">Aprobado</span>
+                                </div>
+                                <div class="document-actions">
+                                    <button class="btn-icon" title="Ver">👁</button>
+                                    <button class="btn-icon" title="Descargar">📥</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Requisitos de Documentos</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="requirements-info">
+                            <h4>Formato de Archivos</h4>
+                            <ul>
+                                <li>Formatos aceptados: PDF, JPG, PNG</li>
+                                <li>Tamaño máximo: 5 MB por archivo</li>
+                                <li>Los documentos deben ser legibles y completos</li>
+                            </ul>
+
+                            <h4>Validez de Documentos</h4>
+                            <ul>
+                                <li>Comprobantes de domicilio: no mayores a 3 meses</li>
+                                <li>Constancias de estudios: del período actual</li>
+                                <li>Identificaciones oficiales: vigentes</li>
+                            </ul>
+
+                            <h4>Tiempo de Revisión</h4>
+                            <ul>
+                                <li>Los documentos son revisados en un plazo de 3-5 días hábiles</li>
+                                <li>Recibirás una notificación cuando sean aprobados o si requieren corrección</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<<<<<<< HEAD
+                <div id="student-perfil-view" class="view">
+                    <div class="view-header">
+                        <div>
+                            <h2>Mi Perfil</h2>
+                            <p class="text-muted">Información personal y académica</p>
+                        </div>
+                        <button id="btnEditarPerfil" class="btn btn-primary">Editar Perfil</button>
+                    </div>
+
+                    <div class="grid-2">
+                        <!-- ==========================
+                            INFORMACIÓN PERSONAL
+                        =========================== -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Información Personal</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="profile-section">
+                                    <div class="profile-avatar-large">
+                                        <button class="btn btn-secondary btn-sm">Cambiar Foto</button>
+                                    </div>
+
+                                    <div class="profile-info">
+
+                                        <div class="info-row">
+                                            <span class="label">Nombre Completo:</span>
+                                            <span class="value" id="perfil-nombre">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Matrícula:</span>
+                                            <span class="value" id="perfil-carnet">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Fecha de Nacimiento:</span>
+                                            <span class="value" id="perfil-fecha-nacimiento">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">CURP:</span>
+                                            <span class="value" id="perfil-curp">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Correo Electrónico:</span>
+                                            <span class="value" id="perfil-correo">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Teléfono:</span>
+                                            <span class="value" id="perfil-telefono">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Dirección:</span>
+                                            <span class="value" id="perfil-direccion">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                        <span class="label">Provincia:</span>
+                                        <span class="value" id="perfil-provincia">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Cantón:</span>
+                                            <span class="value" id="perfil-canton">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Distrito:</span>
+                                            <span class="value" id="perfil-distrito">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Género:</span>
+                                            <span class="value" id="perfil-genero">No registrado</span>
+                                        </div>
+
+                                        <div class="info-row">
+                                            <span class="label">Estado Civil:</span>
+                                            <span class="value" id="perfil-estado-civil">No registrado</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ==========================
+                            INFORMACIÓN ACADÉMICA
+                        =========================== -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>Información Académica</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="profile-info">
+
+                                    <div class="info-row">
+                                        <span class="label">Carrera:</span>
+                                        <span class="value" id="perfil-carrera">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Semestre Actual:</span>
+                                        <span class="value" id="perfil-semestre">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Promedio General:</span>
+                                        <span class="value" id="perfil-promedio">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Créditos Cursados:</span>
+                                        <span class="value" id="perfil-creditos">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Avance:</span>
+                                        <span class="value" id="perfil-avance">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Fecha de Ingreso:</span>
+                                        <span class="value" id="perfil-fecha-ingreso">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Fecha Estimada de Egreso:</span>
+                                        <span class="value" id="perfil-fecha-egreso">No registrado</span>
+                                    </div>
+
+=======
+            <div id="student-perfil-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Mi Perfil</h2>
+                        <p class="text-muted">Información personal y académica</p>
+                    </div>
+                    <button class="btn btn-primary">Editar Perfil</button>
+                </div>
+
+                <div class="grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Información Personal</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="profile-section">
+                                <div class="profile-avatar-large">
+                                    <button class="btn btn-secondary btn-sm">Cambiar Foto</button>
+                                </div>
+                                <div class="profile-info">
+                                    <div class="info-row">
+                                        <span class="label">Nombre Completo:</span>
+                                        <span class="value">Juan Pérez García</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Matrícula:</span>
+                                        <span class="value">2021-0001</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Fecha de Nacimiento:</span>
+                                        <span class="value">15 de Marzo de 2003</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">CURP:</span>
+                                        <span class="value">PEGJ030315HDFRXN09</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Correo Electrónico:</span>
+                                        <span class="value">juan.perez@universidad.edu</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Teléfono:</span>
+                                        <span class="value">(555) 123-4567</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span class="label">Dirección:</span>
+                                        <span class="value">Calle Principal #123, Col. Centro, Ciudad, CP 12345</span>
+                                    </div>
+>>>>>>> 8dcc6a3afc674285b092764e48921ca1c55467fe
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<<<<<<< HEAD
+                    <!-- ==========================
+                        INFORMACIÓN FAMILIAR
+                    =========================== -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Información Familiar</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="family-info-grid">
+                                
+                                <div class="family-member">
+                                    <h4>Padre</h4>
+
+                                    <div class="info-row">
+                                        <span class="label">Nombre:</span>
+                                        <span class="value" id="perfil-padre-nombre">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Ocupación:</span>
+                                        <span class="value" id="perfil-padre-ocupacion">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Teléfono:</span>
+                                        <span class="value" id="perfil-padre-telefono">No registrado</span>
+                                    </div>
+                                </div>
+
+                                <div class="family-member">
+                                    <h4>Madre</h4>
+
+                                    <div class="info-row">
+                                        <span class="label">Nombre:</span>
+                                        <span class="value" id="perfil-madre-nombre">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Ocupación:</span>
+                                        <span class="value" id="perfil-madre-ocupacion">No registrado</span>
+                                    </div>
+
+                                    <div class="info-row">
+                                        <span class="label">Teléfono:</span>
+                                        <span class="value" id="perfil-madre-telefono">No registrado</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ==========================
+                        CONFIGURACIÓN DE CUENTA
+                    =========================== -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Configuración de Cuenta</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="account-settings">
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Cambiar Contraseña</h4>
+                                        <p>Actualiza tu contraseña regularmente para mantener tu cuenta segura</p>
+                                    </div>
+                                    <button class="btn btn-secondary">Cambiar</button>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Notificaciones por Email</h4>
+                                        <p>Recibe actualizaciones sobre tu beca y solicitudes</p>
+                                    </div>
+                                    <label class="toggle">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Notificaciones Push</h4>
+                                        <p>Alertas en tiempo real sobre cambios importantes</p>
+                                    </div>
+                                    <label class="toggle">
+                                        <input type="checkbox" checked>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="setting-item">
+                                    <div class="setting-info">
+                                        <h4>Autenticación de Dos Factores</h4>
+                                        <p>Agrega una capa extra de seguridad a tu cuenta</p>
+                                    </div>
+                                    <button class="btn btn-primary">Activar</button>
+=======
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Información Académica</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="profile-info">
+                                <div class="info-row">
+                                    <span class="label">Carrera:</span>
+                                    <span class="value">Ingeniería en Sistemas Computacionales</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Semestre Actual:</span>
+                                    <span class="value">6to Semestre</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Promedio General:</span>
+                                    <span class="value badge badge-success">9.2</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Créditos Cursados:</span>
+                                    <span class="value">180 de 300</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Avance:</span>
+                                    <span class="value">60%</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Fecha de Ingreso:</span>
+                                    <span class="value">Agosto 2021</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Fecha Estimada de Egreso:</span>
+                                    <span class="value">Julio 2025</span>
+>>>>>>> 8dcc6a3afc674285b092764e48921ca1c55467fe
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+<<<<<<< HEAD
+=======
+                <div class="card">
+                <div class="card-header">
+                    <h3>Información Familiar</h3>
+                </div>
+                <div class="card-body">
+                    <div class="family-info-grid">
+                    <div class="family-member">
+                        <h4>Padre</h4>
+                        <div class="info-row">
+                        <span class="label">Nombre:</span>
+                        <span class="value" id="perfil-padre-nombre">No registrado</span>
+                        </div>
+                        <div class="info-row">
+                        <span class="label">Ocupación:</span>
+                        <span class="value" id="perfil-padre-ocupacion">No registrado</span>
+                        </div>
+                        <div class="info-row">
+                        <span class="label">Teléfono:</span>
+                        <span class="value" id="perfil-padre-telefono">No registrado</span>
+                        </div>
+                    </div>
+
+                    <div class="family-member">
+                        <h4>Madre</h4>
+                        <div class="info-row">
+                        <span class="label">Nombre:</span>
+                        <span class="value" id="perfil-madre-nombre">No registrado</span>
+                        </div>
+                        <div class="info-row">
+                        <span class="label">Ocupación:</span>
+                        <span class="value" id="perfil-madre-ocupacion">No registrado</span>
+                        </div>
+                        <div class="info-row">
+                        <span class="label">Teléfono:</span>
+                        <span class="value" id="perfil-madre-telefono">No registrado</span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+                </div>
+
+
+                <div class="card">
+                <div class="card-header">
+                    <h3>Expediente Socioeconómico</h3>
+                </div>
+                <div class="card-body">
+                    <form id="studentExpedienteForm" class="scholarship-form">
+                    <div class="form-section">
+                        <h3>Información del Hogar</h3>
+                        <div class="form-grid">
+                        <div class="form-group">
+                            <label>Ocupación del padre</label>
+                            <input type="text" class="input" id="exp-ocupacion-padre">
+                        </div>
+                        <div class="form-group">
+                            <label>Ocupación de la madre</label>
+                            <input type="text" class="input" id="exp-ocupacion-madre">
+                        </div>
+                        <div class="form-group">
+                            <label>Ingreso total mensual del hogar</label>
+                            <input type="number" step="0.01" class="input" id="exp-ingreso-total">
+                        </div>
+                        <div class="form-group">
+                            <label>Egreso total mensual del hogar</label>
+                            <input type="number" step="0.01" class="input" id="exp-egreso-total">
+                        </div>
+                        <div class="form-group">
+                            <label>Tipo de vivienda</label>
+                            <input type="text" class="input" id="exp-tipo-vivienda" placeholder="Propia, alquilada, etc.">
+                        </div>
+                        <div class="form-group">
+                            <label>Condición de la vivienda</label>
+                            <input type="text" class="input" id="exp-condicion-vivienda" placeholder="Buena, regular, mala, etc.">
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Servicios y Observaciones</h3>
+                        <div class="form-group">
+                        <label>Servicios básicos con los que cuenta</label>
+                        <textarea class="textarea" id="exp-servicios-basicos" rows="2" placeholder="Agua, luz, internet, etc."></textarea>
+                        </div>
+                        <div class="form-group">
+                        <label>Observaciones adicionales</label>
+                        <textarea class="textarea" id="exp-observaciones" rows="3"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Datos del Padre</h3>
+                        <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="input" id="exp-padre-nombre">
+                        </div>
+                        <div class="form-group">
+                            <label>Edad</label>
+                            <input type="number" class="input" id="exp-padre-edad">
+                        </div>
+                        <div class="form-group">
+                            <label>Ocupación</label>
+                            <input type="text" class="input" id="exp-padre-ocupacion">
+                        </div>
+                        <div class="form-group">
+                            <label>Ingreso mensual</label>
+                            <input type="number" step="0.01" class="input" id="exp-padre-ingreso">
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel educativo</label>
+                            <input type="text" class="input" id="exp-padre-nivel">
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3>Datos de la Madre</h3>
+                        <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" class="input" id="exp-madre-nombre">
+                        </div>
+                        <div class="form-group">
+                            <label>Edad</label>
+                            <input type="number" class="input" id="exp-madre-edad">
+                        </div>
+                        <div class="form-group">
+                            <label>Ocupación</label>
+                            <input type="text" class="input" id="exp-madre-ocupacion">
+                        </div>
+                        <div class="form-group">
+                            <label>Ingreso mensual</label>
+                            <input type="number" step="0.01" class="input" id="exp-madre-ingreso">
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel educativo</label>
+                            <input type="text" class="input" id="exp-madre-nivel">
+                        </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Guardar cambios de expediente</button>
+                    </div>
+                    </form>
+                </div>
+                </div>
+
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Configuración de Cuenta</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="account-settings">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>Cambiar Contraseña</h4>
+                                    <p>Actualiza tu contraseña regularmente para mantener tu cuenta segura</p>
+                                </div>
+                                <button class="btn btn-secondary">Cambiar</button>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>Notificaciones por Email</h4>
+                                    <p>Recibe actualizaciones sobre tu beca y solicitudes</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>Notificaciones Push</h4>
+                                    <p>Alertas en tiempo real sobre cambios importantes</p>
+                                </div>
+                                <label class="toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>Autenticación de Dos Factores</h4>
+                                    <p>Agrega una capa extra de seguridad a tu cuenta</p>
+                                </div>
+                                <button class="btn btn-primary">Activar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+>>>>>>> 8dcc6a3afc674285b092764e48921ca1c55467fe
+
+            <div id="student-ayuda-view" class="view">
+                <div class="view-header">
+                    <div>
+                        <h2>Ayuda y Soporte</h2>
+                        <p class="text-muted">Preguntas frecuentes y contacto</p>
+                    </div>
+                    <button class="btn btn-primary">Contactar Soporte</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Búsqueda Rápida</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="search-help">
+                            <input type="text" class="input" placeholder="¿Qué necesitas ayuda?">
+                            <button class="btn btn-primary">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Preguntas Frecuentes</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="faq-list">
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Cómo solicito una beca?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Para solicitar una beca, sigue estos pasos:</p>
+                                    <ol>
+                                        <li>Ve a la sección "Convocatorias" y revisa las becas disponibles</li>
+                                        <li>Verifica que cumples con los requisitos</li>
+                                        <li>Haz clic en "Solicitar Beca" y completa el formulario</li>
+                                        <li>Sube todos los documentos requeridos</li>
+                                        <li>Envía tu solicitud antes de la fecha límite</li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Qué documentos necesito para solicitar una beca?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Los documentos básicos requeridos son:</p>
+                                    <ul>
+                                        <li>Identificación oficial vigente</li>
+                                        <li>Constancia de estudios del período actual</li>
+                                        <li>Historial académico (Kardex)</li>
+                                        <li>Comprobante de domicilio (no mayor a 3 meses)</li>
+                                        <li>Fotografía tamaño infantil</li>
+                                        <li>Carta de motivos</li>
+                                    </ul>
+                                    <p>Dependiendo del tipo de beca, pueden requerirse documentos adicionales.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Cuánto tiempo tarda el proceso de evaluación?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>El proceso completo de evaluación toma aproximadamente:</p>
+                                    <ul>
+                                        <li>Revisión de documentos: 3-5 días hábiles</li>
+                                        <li>Análisis socioeconómico: 10-15 días hábiles</li>
+                                        <li>Evaluación académica: 5-7 días hábiles</li>
+                                        <li>Sesión de comité: según calendario</li>
+                                        <li>Comunicación de resultados: 2-3 días después del comité</li>
+                                    </ul>
+                                    <p>En total, el proceso puede tomar de 4 a 6 semanas.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Cómo renuevo mi beca?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Para renovar tu beca:</p>
+                                    <ol>
+                                        <li>Asegúrate de cumplir con todos los requisitos académicos</li>
+                                        <li>Ve a la sección "Renovar Beca" cuando se abra el período de renovación</li>
+                                        <li>Actualiza tu información y documentos si es necesario</li>
+                                        <li>Envía tu solicitud de renovación</li>
+                                    </ol>
+                                    <p>El período de renovación generalmente abre 2 meses antes del inicio del nuevo cuatrimestre.</p>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Qué hago si mi beca fue rechazada?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Si tu beca fue rechazada, tienes las siguientes opciones:</p>
+                                    <ul>
+                                        <li>Revisa los motivos del rechazo en la notificación que recibiste</li>
+                                        <li>Puedes presentar una apelación dentro de los 5 días hábiles siguientes</li>
+                                        <li>Proporciona evidencia adicional que respalde tu caso</li>
+                                        <li>Contacta a la oficina de becas para orientación</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="faq-item">
+                                <div class="faq-question">
+                                    <h4>¿Puedo tener más de una beca al mismo tiempo?</h4>
+                                    <button class="faq-toggle">+</button>
+                                </div>
+                                <div class="faq-answer">
+                                    <p>Depende del tipo de becas:</p>
+                                    <ul>
+                                        <li>No puedes tener dos becas de colegiatura simultáneamente</li>
+                                        <li>Puedes combinar una beca de colegiatura con una beca de manutención</li>
+                                        <li>Las becas deportivas y culturales pueden complementar otras becas</li>
+                                        <li>Consulta el reglamento específico de cada convocatoria</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Contacto</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="contact-options">
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(16, 185, 129, 0.1); color: #10b981;">📧</div>
+                                <h4>Correo Electrónico</h4>
+                                <p>becas@universidad.edu</p>
+                                <p class="text-muted">Respuesta en 24-48 horas</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(6, 182, 212, 0.1); color: #06b6d4;">📞</div>
+                                <h4>Teléfono</h4>
+                                <p>(555) 000-0000 ext. 123</p>
+                                <p class="text-muted">Lun-Vie 9:00 AM - 5:00 PM</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(139, 92, 246, 0.1); color: #8b5cf6;">🏢</div>
+                                <h4>Oficina de Becas</h4>
+                                <p>Edificio Administrativo, 2do piso</p>
+                                <p class="text-muted">Lun-Vie 9:00 AM - 5:00 PM</p>
+                            </div>
+
+                            <div class="contact-card">
+                                <div class="contact-icon" style="background: rgba(245, 158, 11, 0.1); color: #f59e0b;">💬</div>
+                                <h4>Chat en Vivo</h4>
+                                <p>Asistente virtual disponible</p>
+                                <button class="btn btn-primary btn-sm">Iniciar Chat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recursos Útiles</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="resources-list">
+                            <a href="#" class="resource-item">
+                                <div class="resource-icon">📄</div>
+                                <div class="resource-info">
+                                    <h4>Reglamento de Becas</h4>
+                                    <p>Documento completo con todas las políticas y procedimientos</p>
+                                </div>
+                                <span class="resource-action">Descargar PDF</span>
+                            </a>
+
+                            <a href="#" class="resource-item">
+                                <div class="resource-icon">📊</div>
+                                <div class="resource-info">
+                                    <h4>Guía de Solicitud</h4>
+                                    <p>Paso a paso para completar tu solicitud correctamente</p>
+                                </div>
+                                <span class="resource-action">Ver Guía</span>
+                            </a>
+
+                            <a href="#" class="resource-item">
+                                <div class="resource-icon">🎥</div>
+                                <div class="resource-info">
+                                    <h4>Video Tutorial</h4>
+                                    <p>Aprende a usar el sistema de becas</p>
+                                </div>
+                                <span class="resource-action">Ver Video</span>
+                            </a>
+
+                            <a href="#" class="resource-item">
+                                <div class="resource-icon">📅</div>
+                                <div class="resource-info">
+                                    <h4>Calendario de Convocatorias</h4>
+                                    <p>Fechas importantes y plazos</p>
+                                </div>
+                                <span class="resource-action">Ver Calendario</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <button class="chatbot-button" id="chatbotButton" onclick="toggleChatbot()">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+    </button>
+
+    <div class="chatbot-widget" id="chatbotWidget">
+        <div class="chatbot-header">
+            <div class="chatbot-header-info">
+                <h3>Asistente Virtual</h3>
+                <p>Estoy aquí para ayudarte</p>
+            </div>
+            <button class="chatbot-close" onclick="toggleChatbot()">&times;</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="chatbot-message bot">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Hola! Soy tu asistente virtual del Sistema de Becas. ¿En qué puedo ayudarte hoy?</p>
+                    <div class="quick-replies">
+                        <button onclick="sendQuickReply('¿Cómo solicito una beca?')">¿Cómo solicito una beca?</button>
+                        <button onclick="sendQuickReply('¿Qué documentos necesito?')">¿Qué documentos necesito?</button>
+                        <button onclick="sendQuickReply('¿Cuánto tarda el proceso?')">¿Cuánto tarda el proceso?</button>
+                        <button onclick="sendQuickReply('¿Cómo renuevo mi beca?')">¿Cómo renuevo mi beca?</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Escribe tu pregunta..." onkeypress="handleChatKeyPress(event)">
+            <button onclick="sendMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="student-script.js"></script>
+    <script src="theme-toggle.js"></script>
+    </body>
+</html>

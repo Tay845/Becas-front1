@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Solicitudes de Becas</title>
+    <link rel="stylesheet" href="theme-styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .solicitud-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .solicitud-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .solicitud-codigo {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .badge.aprobada { background: #10b981; color: white; }
+        .badge.APROBADA { background: #10b981; color: white; }
+        .badge.rechazada { background: #ef4444; color: white; }
+        .badge.RECHAZADA { background: #ef4444; color: white; }
+        .badge.pendiente { background: #f59e0b; color: white; }
+        .badge.PENDIENTE { background: #f59e0b; color: white; }
+        .badge.en_evaluacion { background: #3b82f6; color: white; }
+        .badge.EN_EVALUACION { background: #3b82f6; color: white; }
+        .badge.no_aprobada { background: #ef4444; color: white; }
+        .badge.NO_APROBADA { background: #ef4444; color: white; }
+        .badge.activa { background: #3b82f6; color: white; }
+        .badge.ACTIVA { background: #3b82f6; color: white; }
+        .badge.finalizada { background: #6b7280; color: white; }
+        .badge.FINALIZADA { background: #6b7280; color: white; }
+
+        .card-body {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .section {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .info-row {
+            margin: 8px 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+            margin-right: 8px;
+        }
+
+        .info-value {
+            color: #333;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .no-data-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .demo-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .demo-button:hover {
+            background: #5568d3;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .card-body {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Mis Solicitudes de Becas</h1>
+        <div id="solicitudesContainer"></div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓN DE LA API
+        // ============================================
+        const API_BASE_URL = 'https://becas-back1.onrender.com/api';
+        
+        // Obtener ID del aspirante desde el usuario autenticado
+        async function getIdAspirante() {
+            try {
+                // Intenta obtener el ID desde localStorage primero
+                const idGuardado = localStorage.getItem('id_aspirante');
+                
+                // Validar que sea un número entero razonable
+                if (idGuardado && !isNaN(idGuardado) && parseInt(idGuardado) > 0) {
+                    console.log('ID aspirante desde localStorage:', idGuardado);
+                    
+                    // Intentar obtener datos del usuario para verificar si es id_aspirante correcto
+                    try {
+                        const token = localStorage.getItem('token');
+                        if (token) {
+                            const response = await fetch('https://becas-back1.onrender.com/api/auth/me', {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            });
+                            
+                            if (response.ok) {
+                                const userData = await response.json();
+                                const user = userData.user;
+                                
+                                // Si el usuario tiene id_aspirante, usarlo
+                                if (user && user.id_aspirante) {
+                                    console.log('ID aspirante desde servidor:', user.id_aspirante);
+                                    localStorage.setItem('id_aspirante', user.id_aspirante);
+                                    return user.id_aspirante;
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.warn('No se pudo validar con servidor, usando localStorage:', err);
+                    }
+                    
+                    return idGuardado;
+                }
+
+                // Si no hay ID guardado, intentar obtener desde el servidor
+                try {
+                    const token = localStorage.getItem('token');
+                    if (token) {
+                        const response = await fetch('https://becas-back1.onrender.com/api/auth/me', {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            const userData = await response.json();
+                            const user = userData.user;
+                            const id = user?.id_aspirante || user?.id;
+                            console.log('ID aspirante desde servidor:', id);
+                            localStorage.setItem('id_aspirante', id);
+                            return id;
+                        }
+                    }
+                } catch (err) {
+                    console.error('Error obteniendo aspirante desde servidor:', err);
+                }
+
+                // Valor por defecto
+                console.log('Usando ID aspirante por defecto: 7');
+                return 7;
+            } catch (err) {
+                console.error('Error en getIdAspirante:', err);
+                return 7;
+            }
+        }
+        
+        // Función para iniciar la carga de datos
+        function iniciarCarga() {
+            console.log('🚀 Iniciando carga de resultados...');
+            cargarDatosDesdeAPI();
+        }
+
+        // ============================================
+        // FUNCIÓN PARA CARGAR DATOS DESDE EL API
+        // ============================================
+        async function cargarDatosDesdeAPI() {
+            try {
+                const ID_ASPIRANTE = await getIdAspirante();
+                console.log('Cargando datos para ID:', ID_ASPIRANTE);
+                
+                const url = `${API_BASE_URL}/resultados/aspirante/${ID_ASPIRANTE}`;
+                console.log('URL de solicitud:', url);
+                
+                const response = await fetch(url);
+                
+                console.log('Respuesta status:', response.status);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.log('No se encontraron datos (404)');
+                        renderizarSolicitudes([]);
+                        return;
+                    }
+                    throw new Error(`Error ${response.status}: No se pudieron cargar los datos`);
+                }
+
+                const data = await response.json();
+                console.log('Datos recibidos:', data);
+                
+                if (data.resultados && Array.isArray(data.resultados)) {
+                    renderizarSolicitudes(data.resultados);
+                } else if (Array.isArray(data)) {
+                    renderizarSolicitudes(data);
+                } else {
+                    console.warn('Estructura de datos inesperada:', data);
+                    renderizarSolicitudes([]);
+                }
+            } catch (error) {
+                console.error('Error al cargar datos:', error);
+                document.getElementById('solicitudesContainer').innerHTML = `
+                    <div class="no-data">
+                        <div class="no-data-icon"></div>
+                        <h2>Error al cargar los datos</h2>
+                        <p>${error.message}</p>
+                        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">Verifica que el servidor esté ejecutándose en https://becas-back1.onrender.com</p>
+                        <button class="demo-button" onclick="cargarDatosEjemplo()">Ver datos de ejemplo</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Datos de ejemplo basados en la estructura de la consulta SQL
+        const datosEjemplo = [
+            {
+                id_solicitud: 1,
+                codigo_solicitud: 'SOL-2024-001',
+                estado_solicitud: 'aprobada',
+                decision_comite: 'APROBADA',
+                motivo_resolucion: 'Cumple con todos los requisitos académicos y socioeconómicos',
+                fecha_resolucion: '2024-01-15',
+                id_beca: 101,
+                monto_beca: 1500000,
+                fecha_inicio: '2024-02-01',
+                fecha_fin: '2024-12-31',
+                estado_beca: 'activa',
+                tipo_beca: 'Beca Excelencia Académica',
+                codigo_tipo_beca: 'BEA-001',
+                modalidad_beca: 'Mensual',
+                tope_beca: 150000
+            },
+            {
+                id_solicitud: 2,
+                codigo_solicitud: 'SOL-2023-045',
+                estado_solicitud: 'rechazada',
+                decision_comite: 'RECHAZADA',
+                motivo_resolucion: 'No cumple con el promedio mínimo requerido',
+                fecha_resolucion: '2023-08-20',
+                id_beca: null,
+                monto_beca: null,
+                fecha_inicio: null,
+                fecha_fin: null,
+                estado_beca: null,
+                tipo_beca: null,
+                codigo_tipo_beca: null,
+                modalidad_beca: null,
+                tope_beca: null
+            },
+            {
+                id_solicitud: 3,
+                codigo_solicitud: 'SOL-2024-078',
+                estado_solicitud: 'pendiente',
+                decision_comite: null,
+                motivo_resolucion: null,
+                fecha_resolucion: null,
+                id_beca: null,
+                monto_beca: null,
+                fecha_inicio: null,
+                fecha_fin: null,
+                estado_beca: null,
+                tipo_beca: null,
+                codigo_tipo_beca: null,
+                modalidad_beca: null,
+                tope_beca: null
+            }
+        ];
+
+        function formatearMoneda(valor) {
+            if (!valor) return 'N/A';
+            return new Intl.NumberFormat('es-CR', {
+                style: 'currency',
+                currency: 'CRC',
+                minimumFractionDigits: 0
+            }).format(valor);
+        }
+
+        function formatearFecha(fecha) {
+            if (!fecha) return 'N/A';
+            return new Date(fecha).toLocaleDateString('es-CR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function renderizarSolicitudes(datos) {
+            const container = document.getElementById('solicitudesContainer');
+            
+            if (!datos || datos.length === 0) {
+                container.innerHTML = `
+                    <div class="no-data">
+                        <div class="no-data-icon"></div>
+                        <h2>No hay solicitudes para mostrar</h2>
+                        <p>Aún no tienes solicitudes de becas registradas en el sistema.</p>
+                        <button class="demo-button" onclick="cargarDatosEjemplo()">Ver datos de ejemplo</button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = datos.map(solicitud => {
+                // Función para obtener solo los datos que no son null
+                const getTipoBecaSection = () => {
+                    if (!solicitud.tipo_beca) return '';
+                    
+                    return `
+                        <div class="section">
+                            <div class="section-title">Tipo de Beca</div>
+                            <div class="info-row">
+                                <span class="info-label">Nombre:</span>
+                                <span class="info-value">${solicitud.tipo_beca}</span>
+                            </div>
+                            ${solicitud.modalidad_beca ? `
+                            <div class="info-row">
+                                <span class="info-label">Modalidad:</span>
+                                <span class="info-value">${solicitud.modalidad_beca}</span>
+                            </div>
+                            ` : ''}
+                            ${solicitud.tope_beca ? `
+                            <div class="info-row">
+                                <span class="info-label">Tope Mensual:</span>
+                                <span class="info-value">${formatearMoneda(solicitud.tope_beca)}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                };
+
+                const getResolucionSection = () => {
+                    if (!solicitud.decision_comite) return '';
+                    
+                    return `
+                        <div class="section">
+                            <div class="section-title">Resolución del Comité</div>
+                            <div class="info-row">
+                                <span class="info-label">Decisión:</span>
+                                <span class="info-value">${solicitud.decision_comite}</span>
+                            </div>
+                            ${solicitud.motivo_resolucion ? `
+                            <div class="info-row">
+                                <span class="info-label">Motivo:</span>
+                                <span class="info-value">${solicitud.motivo_resolucion}</span>
+                            </div>
+                            ` : ''}
+                            ${solicitud.fecha_resolucion ? `
+                            <div class="info-row">
+                                <span class="info-label">Fecha de Resolución:</span>
+                                <span class="info-value">${formatearFecha(solicitud.fecha_resolucion)}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                };
+
+                const getBecaSection = () => {
+                    if (!solicitud.id_beca) return '';
+                    
+                    return `
+                        <div class="section">
+                            <div class="section-title">Información de la Beca Asignada</div>
+                            ${solicitud.monto_beca ? `
+                            <div class="info-row">
+                                <span class="info-label">Monto Total:</span>
+                                <span class="info-value">${formatearMoneda(solicitud.monto_beca)}</span>
+                            </div>
+                            ` : ''}
+                            ${solicitud.estado_beca ? `
+                            <div class="info-row">
+                                <span class="info-label">Estado:</span>
+                                <span class="badge ${solicitud.estado_beca.toLowerCase()}">${solicitud.estado_beca.toUpperCase()}</span>
+                            </div>
+                            ` : ''}
+                            ${solicitud.fecha_inicio ? `
+                            <div class="info-row">
+                                <span class="info-label">Fecha de Inicio:</span>
+                                <span class="info-value">${formatearFecha(solicitud.fecha_inicio)}</span>
+                            </div>
+                            ` : ''}
+                            ${solicitud.fecha_fin ? `
+                            <div class="info-row">
+                                <span class="info-label">Fecha de Fin:</span>
+                                <span class="info-value">${formatearFecha(solicitud.fecha_fin)}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                };
+
+                // Función para obtener el mensaje de estado correcto
+                const getEstadoSection = () => {
+                    const estado = solicitud.estado_solicitud?.toUpperCase();
+                    
+                    let mensaje = '';
+                    
+                    if (estado === 'APROBADA') {
+                        mensaje = 'Tu solicitud ha sido aprobada. Pronto recibirás más información sobre tu beca.';
+                    } else if (estado === 'RECHAZADA' || estado === 'NO APROBADA') {
+                        mensaje = 'Tu solicitud ha sido rechazada. Consulta los motivos en la sección de resolución del comité.';
+                    } else if (estado === 'EN_EVALUACION' || estado === 'EN EVALUACION') {
+                        mensaje = 'Tu solicitud se encuentra en evaluación. Pronto recibirás una respuesta del comité.';
+                    } else if (estado === 'PENDIENTE') {
+                        mensaje = 'Tu solicitud está pendiente de revisión.';
+                    }
+                    
+                    // Solo mostrar sección de estado si no hay beca ni resolución
+                    if (solicitud.id_beca || solicitud.decision_comite) {
+                        return '';
+                    }
+                    
+                    return `
+                        <div class="section">
+                            <div class="section-title">Estado</div>
+                            <p>${mensaje}</p>
+                        </div>
+                    `;
+                };
+
+                return `
+                    <div class="solicitud-card">
+                        <div class="card-header">
+                            <div class="solicitud-codigo">${solicitud.codigo_solicitud}</div>
+                            <span class="badge ${solicitud.estado_solicitud.toLowerCase()}">${solicitud.estado_solicitud.toUpperCase()}</span>
+                        </div>
+                        
+                        <div class="card-body">
+                            ${getTipoBecaSection()}
+                            ${getResolucionSection()}
+                            ${getBecaSection()}
+                            ${getEstadoSection()}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function cargarDatosEjemplo() {
+            renderizarSolicitudes(datosEjemplo);
+        }
+
+       
+        // Esperar a que el DOM esté listo antes de cargar
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', iniciarCarga);
+        } else {
+            iniciarCarga();
+        }
+        
+
+    </script>
+    <script src="theme-toggle.js"></script>
+</body>
+</html>
